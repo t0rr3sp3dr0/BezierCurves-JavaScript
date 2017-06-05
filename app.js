@@ -27,6 +27,13 @@ function deCasteljau(points, t) {
 function draw(context, curve, delta) {
     let t = 0;
     const points = new Array((1 / delta) + 1);
+    for (let i = 0; i < curve.length - 1; i++) {
+        context.beginPath();
+        context.moveTo(curve[i].x, curve[i].y);
+        context.lineTo(curve[i+1].x, curve[i+1].y);
+        context.strokeStyle = 'green';
+        context.stroke();
+    }
     for (let i = 0; i < (1 / delta) + 1; i++) {
         points[i] = deCasteljau(curve, Math.round(t * 100) / 100);
         t += delta;
@@ -37,15 +44,17 @@ function draw(context, curve, delta) {
 }
 
 function drawLine(context, p1, p2) {
+    context.beginPath();
     context.moveTo(p1.x, p1.y);
     context.lineTo(p2.x, p2.y);
+    context.strokeStyle = 'white';
     context.stroke();
 }
 
 const main = function () {
     const animation = parseFloat(prompt("Digite o tempo total de animação"));
     const interval = parseFloat(prompt("Digite o intervalo"));
-    const degree = parseInt(prompt("Digite o grau das curvas"));
+    const degree = parseInt(prompt("Digite o grau das curvas")) + 1;
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const curves = [];
@@ -60,8 +69,13 @@ const main = function () {
     canvas.addEventListener('click', e => {
         console.log(new Point(e.pageX, e.pageY));
         console.log(curves);
-        if (curves[curves.length - 1].length < degree)
+        if (curves[curves.length - 1].length < degree){
             curves[curves.length - 1].push(new Point(e.pageX, e.pageY));
+            context.beginPath();
+            context.arc(e.pageX, e.pageY, 5, 0, 2*Math.PI);
+            context.strokeStyle = 'red';
+            context.stroke();
+        }
         if (curves[curves.length - 1].length == degree) {
             draw(context, curves[curves.length - 1], interval / animation);
             curves.push([]);
