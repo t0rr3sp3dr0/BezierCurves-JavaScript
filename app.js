@@ -27,13 +27,6 @@ function deCasteljau(points, t) {
 function draw(context, curve, delta) {
     let t = 0;
     const points = new Array((1 / delta) + 1);
-    for (let i = 0; i < curve.length - 1; i++) {
-        context.beginPath();
-        context.moveTo(curve[i].x, curve[i].y);
-        context.lineTo(curve[i+1].x, curve[i+1].y);
-        context.strokeStyle = 'green';
-        context.stroke();
-    }
     for (let i = 0; i < (1 / delta) + 1; i++) {
         points[i] = deCasteljau(curve, Math.round(t * 100) / 100);
         t += delta;
@@ -49,6 +42,16 @@ function drawLine(context, p1, p2) {
     context.lineTo(p2.x, p2.y);
     context.strokeStyle = 'white';
     context.stroke();
+}
+
+function drawPolygonal(context, curve) {
+    for (let i = 0; i < curve.length -1; i++) {
+        context.beginPath();
+        context.moveTo(curve[i].x, curve[i].y);
+        context.lineTo(curve[i+1].x, curve[i+1].y);
+        context.strokeStyle = 'green';
+        context.stroke();
+    }
 }
 
 const main = function () {
@@ -78,6 +81,7 @@ const main = function () {
         }
         if (curves[curves.length - 1].length == degree) {
             draw(context, curves[curves.length - 1], interval / animation);
+            drawPolygonal(context, curves[curves.length - 1]);
             curves.push([]);
         }
     });
