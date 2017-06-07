@@ -150,7 +150,7 @@ const main = function () {
                 //Precisa corrigir essa parte de pintar por cima
                 draw(context, finalCurve, interval / animation, 'black');
                 play(context, control, delta, t + delta);
-            }, interval);
+            }, interval*1000);
         }
 
     }
