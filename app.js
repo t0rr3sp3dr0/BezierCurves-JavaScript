@@ -54,20 +54,15 @@ function drawPolygonal(context, curve) {
     }
 }
 
-function drawPolygonals(context, curves) {
-    /* Caso precise colocar a função num botão
-        que desenha todas as poligonais
-     */
-    for (let i = 0; i < curves.length; i++) {
-        drawPolygonal(context, curves[i]);
-    }
-}
+// function drawPolygonals(context, curves) {
+//     /* Caso precise colocar a função num botão
+//         que desenha todas as poligonais
+//      */
+//     for (let i = 0; i < curves.length; i++) {
+//         drawPolygonal(context, curves[i]);
+//     }
+// }
 
-function drawControlPoint(context, curve) {
-    for (let i = 0; i < curve.length; i++) {
-
-    }
-}
 
 function controlCurves(curves) {
     /*  Dado um conjunto de curvas de bezier, calcular
@@ -142,23 +137,30 @@ const main = function () {
             }
 
         }
+    };
+
+    function play(context, control, delta, t) {
+        let finalCurve = [];
+        for (let i = 0; i < control.length; i++) {
+            finalCurve.push(deCasteljau(control[i], t));
+        }
+        draw(context, finalCurve, interval / animation, 'white');
+        if (t <= 1) {
+            setTimeout(function () {
+                //Precisa corrigir essa parte de pintar por cima
+                draw(context, finalCurve, interval / animation, 'black');
+                play(context, control, delta, t + delta);
+            }, interval);
+        }
+
     }
-    // ==>A fazer<==
-    // document.getElementById("btnPlay").onclick = function() {
-    //     if (curves.length > 2) {
-    //         let control = controlCurves(curves);
-    //         for (let t = 0; t < 1; t += interval/animation) {
-    //             let points = [];
-    //             for (let i = 0; i < control.length; i++) {
-    //                 points.push(deCasteljau(control[i], t));
-    //             }
-    //
-    //         }
-    //
-    //         let tempCurve = [];
-    //
-    //     }
-    // }
+    document.getElementById("btnPlay").onclick = function() {
+        if (curves.length > 2) {
+            let control = controlCurves(curves);
+            play(context, control, interval/animation, 0);
+
+        }
+    };
 };
 
 
