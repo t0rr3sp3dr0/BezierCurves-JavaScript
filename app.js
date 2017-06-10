@@ -13,14 +13,14 @@ function deCasteljau(points, t) {
     if (points.length === 1)
         return points[0];
     else {
-        const newpoints = new Array(points.length - 1);
-        const l = newpoints.length;
+        const newPoints = new Array(points.length - 1);
+        const l = newPoints.length;
         for (i = 0; i < l; i++) {
             x = (1 - t) * points[i].x + t * points[i + 1].x;
             y = (1 - t) * points[i].y + t * points[i + 1].y;
-            newpoints[i] = new Point(x, y);
+            newPoints[i] = new Point(x, y);
         }
-        return deCasteljau(newpoints, t)
+        return deCasteljau(newPoints, t)
     }
 }
 
@@ -81,7 +81,7 @@ function controlCurves(curves) {
 }
 
 const main = function () {
-    const interval = parseFloat(prompt("Digite o intervalo"));
+    const interval = parseFloat(prompt("Digite o intervalo (0 - 1)"));
     const degree = parseInt(prompt("Digite o grau das curvas")) + 1;
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
@@ -142,7 +142,7 @@ const main = function () {
             finalCurve.push(deCasteljau(control[i], t));
         }
         draw(context, finalCurve, interval, 'white');
-        if (t <= 1) {
+        if (t < 1 - delta) {
             setTimeout(function () {
                 // Precisa corrigir essa parte de pintar por cima
                 draw(context, finalCurve, interval, 'black');
