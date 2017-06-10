@@ -85,7 +85,7 @@ const main = function () {
     const degree = parseInt(prompt("Digite o grau das curvas")) + 1;
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
-    const curves = [];
+    let curves = [];
     let dirty = false; // para saber se as curvas dos pontos de controle foram desenhadas
     curves.push([]);
 
@@ -142,7 +142,7 @@ const main = function () {
             finalCurve.push(deCasteljau(control[i], t));
         }
         draw(context, finalCurve, interval, 'white');
-        if (t < 1 - delta) {
+        if (t < 1) {
             setTimeout(function () {
                 // Precisa corrigir essa parte de pintar por cima
                 draw(context, finalCurve, interval, 'black');
@@ -155,9 +155,15 @@ const main = function () {
         if (curves.length > 2) {
             let control = controlCurves(curves);
             play(context, control, interval, 0);
-
         }
     };
+    
+    document.getElementById("btnClear").onclick = function () {
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        curves = [];
+        let dirty = false;
+        curves.push([]);
+    }
 };
 
 main();
