@@ -12,16 +12,15 @@ class Point {
 function deCasteljau(points, t) {
     if (points.length === 1)
         return points[0];
-    else {
-        const newPoints = new Array(points.length - 1);
-        const l = newPoints.length;
-        for (i = 0; i < l; i++) {
-            x = (1 - t) * points[i].x + t * points[i + 1].x;
-            y = (1 - t) * points[i].y + t * points[i + 1].y;
-            newPoints[i] = new Point(x, y);
-        }
-        return deCasteljau(newPoints, t)
+
+    const newPoints = new Array(points.length - 1);
+    const l = newPoints.length;
+    for (i = 0; i < l; i++) {
+        x = (1 - t) * points[i].x + t * points[i + 1].x;
+        y = (1 - t) * points[i].y + t * points[i + 1].y;
+        newPoints[i] = new Point(x, y);
     }
+    return deCasteljau(newPoints, t)
 }
 
 function draw(context, curve, delta, color) {
@@ -142,7 +141,7 @@ const main = function () {
             finalCurve.push(deCasteljau(control[i], t));
         }
         draw(context, finalCurve, interval, 'white');
-        if (t < 1 - delta) {
+        if (t < 1) {
             setTimeout(function () {
                 // Precisa corrigir essa parte de pintar por cima
                 draw(context, finalCurve, interval, 'black');
