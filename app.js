@@ -32,24 +32,24 @@ function draw(context, curve, delta, color) {
         t += delta;
     }
 
-    for (let i = 0; i < 1 / delta; i++)
-        drawLine(context, points[i], points[i + 1], color);
+    for (let i = 1 / delta; i > 0; i--)
+        drawLine(context, points[i], points[i - 1], color);
 }
 
-function drawLine(context, p1, p2, color) {
+function drawLine(context, p1, p2, strokeStyle) {
     context.beginPath();
     context.moveTo(p1.x, p1.y);
     context.lineTo(p2.x, p2.y);
-    context.strokeStyle = color;
+    context.strokeStyle = strokeStyle;
     context.stroke();
 }
 
-function drawPolygonal(context, curve) {
-    for (let i = 0; i < curve.length -1; i++) {
+function drawPolygonal(context, curve, strokeStyle) {
+    for (let i = curve.length - 1; i > 0; i--) {
         context.beginPath();
         context.moveTo(curve[i].x, curve[i].y);
-        context.lineTo(curve[i+1].x, curve[i+1].y);
-        context.strokeStyle = 'green';
+        context.lineTo(curve[i - 1].x, curve[i - 1].y);
+        context.strokeStyle = strokeStyle;
         context.stroke();
     }
 }
@@ -65,24 +65,22 @@ function drawPolygonal(context, curve) {
 
 
 function controlCurves(curves) {
-    /*  Dado um conjunto de curvas de bezier, calcular
-        novas curvas com os pontos de controle do conjunto.
-        Ex:
-        control[0] = { curves[0][0], curves[1][0], ... , curves[n][0] }
-        control[1] = { curves[0][1], curves[1][1], ... , curves[n][1] }
-     */
+    // Dado um conjunto de curvas de bezier, calcular
+    // novas curvas com os pontos de controle do conjunto.
+    // Ex:
+    // control[0] = { curves[0][0], curves[1][0], ... , curves[n][0] }
+    // control[1] = { curves[0][1], curves[1][1], ... , curves[n][1] }
+
     let control = [];
     for (let i = 0; i < curves[0].length; i++) {
         control.push([]);
-        for (let j = 0; j < curves.length - 1; j++) {
+        for (let j = 0; j < curves.length - 1; j++)
             control[i].push(curves[j][i]);
-        }
     }
     return control;
 }
 
 const main = function () {
-    const animation = parseFloat(prompt("Digite o tempo total de animação"));
     const interval = parseFloat(prompt("Digite o intervalo"));
     const degree = parseInt(prompt("Digite o grau das curvas")) + 1;
     const canvas = document.getElementById('canvas');
@@ -102,7 +100,7 @@ const main = function () {
         if (curves.length > 2 && dirty === true) {
             let control = controlCurves(curves);
             for (let i = 0; i < control.length; i++) {
-                draw(context, control[i], interval/animation, 'black');
+                draw(context, control[i], interval, 'black');
             }
         }
         console.log(new Point(e.pageX, e.pageY));
@@ -116,8 +114,8 @@ const main = function () {
         }
         console.log(curves);
         if (curves[curves.length - 1].length === degree) {
-            draw(context, curves[curves.length - 1], interval / animation, 'white');
-            drawPolygonal(context, curves[curves.length - 1]);
+            draw(context, curves[curves.length - 1], interval, 'white');
+            drawPolygonal(context, curves[curves.length - 1], 'green');
             curves.push([]);
             if (dirty)
                 dirty = false;
@@ -125,15 +123,14 @@ const main = function () {
         }
     });
     document.getElementById("btnShowControlCurves").onclick = function() {
-        /*  Se tem curvas suficientes para desenhar curvas dos pontos de controle, desenhe
-            Isso deverá ser apagado no futuro, pra que não atrapalhe a visualização
-        */
+        // Se tem curvas suficientes para desenhar curvas dos pontos de controle, desenhe
+        // Isso deverá ser apagado no futuro, pra que não atrapalhe a visualização
         if (curves.length > 2) {
             dirty = true;
             let control = controlCurves(curves);
             console.log(control);
             for(let i = 0; i < control.length; i++) {
-                draw(context, control[i], interval/animation, 'blue');
+                draw(context, control[i], interval, 'blue');
             }
 
         }
@@ -144,11 +141,11 @@ const main = function () {
         for (let i = 0; i < control.length; i++) {
             finalCurve.push(deCasteljau(control[i], t));
         }
-        draw(context, finalCurve, interval / animation, 'white');
+        draw(context, finalCurve, interval, 'white');
         if (t <= 1) {
             setTimeout(function () {
-                //Precisa corrigir essa parte de pintar por cima
-                draw(context, finalCurve, interval / animation, 'black');
+                // Precisa corrigir essa parte de pintar por cima
+                draw(context, finalCurve, interval, 'black');
                 play(context, control, delta, t + delta);
             }, interval*1000);
         }
@@ -157,12 +154,10 @@ const main = function () {
     document.getElementById("btnPlay").onclick = function() {
         if (curves.length > 2) {
             let control = controlCurves(curves);
-            play(context, control, interval/animation, 0);
+            play(context, control, interval, 0);
 
         }
     };
 };
-
-
 
 main();
