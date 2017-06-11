@@ -2,32 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bezier Curves</title>
     <style>
         body {
             margin: 0;
         }
+        label {
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
-<canvas id="canvas" width="1200" height="700"></canvas>
-<br>
-<button id="btnShowControlCurves">Control Curves</button>
-<button id="btnPlay1">Play 1</button>
-<button id="btnPlay2">Play 2</button>
-<button id="btnDisco">Disco dance</button>
-<button id="btnClear">Clear</button>
-<button id="btnReset">Reset</button>
-<label>Pontos</label>
-<input id="cbPoints" type="checkbox" >
-<label>Curvas</label>
-<input id="cbCurves" type="checkbox">
-<label>Poligonais</label>
-<input id="cbPolygonals" type="checkbox">
-<label>Curva 1</label>
-<input id="cbCurve1" type="checkbox">
-<label>Curva 2</label>
-<input id="cbCurve2" type="checkbox">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<canvas id="canvas" height="700"></canvas>
+<div class="container-fluid" id="mainContainer">
+    <br>
+    <div class="row text-center">
+        <div class="col-sm-6">
+            <div class="well well-sm">
+                <button type="button" class="btn btn-default" id="btnShowControlCurves">Curvas de Controle</button>
+                <button type="button" class="btn btn-default" id="btnPlay1">Animação 1</button>
+                <button type="button" class="btn btn-default" id="btnPlay2">Animação 2</button>
+                <button type="button" class="btn btn-success" id="btnDisco">Disco Dance</button>
+                <button type="button" class="btn btn-primary" id="btnClear">Clear</button>
+                <button type="button" class="btn btn-danger" id="btnReset">Reset</button>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="well well-sm">
+                <div class="checkbox">
+                    <label><input id="cbPoints" type="checkbox" >Pontos  </label>
+                    <label><input id="cbCurves" type="checkbox">Curvas  </label>
+                    <label><input id="cbPolygonals" type="checkbox">Poligonais</label>
+                    <label><input id="cbCurve1" type="checkbox">Trajetoria 1</label>
+                    <label><input id="cbCurve2" type="checkbox">Trajetoria 2</label>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+    <p>Para mover as curvas: clique sobre um ponto e arraste</p>
+    <p>Para deletar uma curva: clique sobre um ponto da curva e aperte D</p>
+</div>
 
 
 <audio id="myAudio"></audio>

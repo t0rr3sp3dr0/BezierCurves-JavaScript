@@ -142,6 +142,7 @@ const main = function () {
     const interval = parseFloat(prompt("Digite o intervalo (0 - 1)"));
     const degree = parseInt(prompt("Digite o grau das curvas")) + 1;
     const canvas = document.getElementById('canvas');
+    canvas.width = document.documentElement.clientWidth;
     const context = canvas.getContext('2d');
     let curves = [];
     let audio = document.getElementById("myAudio");
