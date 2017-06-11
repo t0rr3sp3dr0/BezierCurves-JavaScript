@@ -363,6 +363,10 @@ const main = function () {
     }
 
     document.getElementById("btnReset").onclick = function () {
+        if (play) {
+            audio.pause();
+            play = !play;
+        }
         reset();
     };
 
